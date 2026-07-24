@@ -1,5 +1,40 @@
 # Macro Quant — Regime Engine (base rates conditionnels au régime)
 
+## 🚀 Quickstart (2 min, aucune clé API)
+
+**Prérequis : Python 3.9+ uniquement.** Une seule dépendance (`numpy`), les données se téléchargent toutes seules depuis FRED au 1er run.
+
+```bash
+# 1. cloner
+git clone https://github.com/demoxzz/macro-quant-regime-engine
+cd macro-quant-regime-engine
+
+# 2. (recommandé) environnement isolé
+python3 -m venv .venv
+source .venv/bin/activate          # Windows : .venv\Scripts\activate
+
+# 3. installer la seule dépendance
+pip install -r requirements.txt     # (== pip install numpy)
+
+# 4. lancer le moteur : régime du jour + base rates forward (console)
+python3 engine/macro_quant_engine.py
+```
+
+> **Windows** : remplace `python3` par `python`.
+> **Premier run** : ~10–20 s (téléchargement FRED, mis en cache dans `/tmp/fredcache` → instantané ensuite).
+> **Sortie attendue** : un bloc `=== REGIME DU JOUR ===` avec les z-scores des features, puis les base rates forward. Si tu vois ça, tout marche.
+> **Erreur `No module named numpy`** → l'étape 3 a été sautée (ou pas dans le bon venv).
+
+Les deux autres scripts, une fois numpy installé :
+```bash
+python3 engine/macro_quant_backtest.py   # backtest + robustesse (DSR / PBO / hold-out)
+python3 engine/macro_quant_daily.py      # persiste le run du jour dans db/
+```
+
+---
+
+## C'est quoi
+
 Petit moteur perso. L'idée : décrire le **régime macro cross-asset du jour** (taux, courbe,
 vol, FX, commos, indices) comme un vecteur de features standardisées de façon **causale**,
 retrouver ses **k plus proches voisins historiques** (Mahalanobis via whitening PCA), et en
@@ -42,20 +77,6 @@ qui ne marche pas est mesuré proprement** — c'est là-dessus que ton regard r
 - Backtest **walk-forward causal + purgé**. Hold-out = sélection de l'asset **sur le train seul**.
 - Tag confiance : 🔴 `n_eff<20` · 🟡 20–60 · 🟢 >60 ; « signal » seulement si l'IC bootstrap
   **exclut** la valeur inconditionnelle.
-
----
-
-## Lancer
-
-```bash
-python3 engine/macro_quant_engine.py     # régime du jour + base rates forward (console)
-python3 engine/macro_quant_backtest.py   # backtest + appendix robustesse (DSR/PBO/hold-out)
-python3 engine/macro_quant_daily.py      # persiste le run du jour dans la db
-```
-
-Premier run = téléchargement FRED (caché dans `/tmp/fredcache`). `numpy` requis
-(`pip install numpy`). Les scripts `make_*_charts.py` de mon repo (matplotlib) ne sont pas
-inclus — pas nécessaires pour lire les résultats.
 
 ---
 
