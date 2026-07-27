@@ -1,0 +1,16 @@
+# Environnement conda pour macro-quant-regime-engine
+#   conda env create -f environment.yml
+#   conda activate macro-quant
+name: macro-quant
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  # --- deps du moteur ---
+  - numpy>=1.21
+  - matplotlib>=3.5
+  # --- exploration / notebooks ---
+  - jupyterlab
+  - ipykernel
+  - pandas
+  - scipy

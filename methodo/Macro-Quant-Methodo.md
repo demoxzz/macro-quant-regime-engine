@@ -134,7 +134,29 @@ Un base rate n'a de valeur que s'il **prédit hors-échantillon**. Backtest caus
 
 **Verdict** : sur 8 assets testés, **seul le VIX** a un IC OOS significatif (**+0,170 @10j, t=+3,22, \*\*\***, stable 13/15 années). Nasdaq (IC −0,036), USD (≈0), FX, Brent, taux → **pas de skill directionnel OOS** (t<1). Le flag « signal » contemporain de l'engine v1 est **trompeur** (il a flaggé USD/NQ, nuls OOS).
 
-> **RÈGLE** : la Couche 2 n'émet une **conclusion forward directionnelle** que pour un asset à **IC OOS significatif** (aujourd'hui : VIX seul). Les autres base rates sont montrés en **contexte de régime**, jamais comme un pari directionnel. Le vrai edge du modèle = **timing de la volatilité**, pas la direction actions/FX/taux.
+> **RÈGLE** : la Couche 2 n'émet une **conclusion forward directionnelle** que pour un asset à **IC OOS significatif** (aujourd'hui : VIX seul). Les autres base rates sont montrés en **contexte de régime**, jamais comme un pari directionnel. Le modèle est **muet sur la direction** actions/FX/taux.
+
+### ⚠️ 4bis-b. RÉVISION 2026-07-27 — l'edge VIX est de la réversion de niveau, pas du signal macro
+
+L'IC OOS ci-dessus est **réel mais mal attribué**. Test d'ablation complet : [[Macro/Quant/research/2026-07-27 - Ablation VIX (baselines mean-reversion)]].
+
+Même harnais causal, seul le jeu de features varie (n≈3630, @10j) :
+
+| Modèle | IC | Lecture |
+| --- | --- | --- |
+| Moteur, 9 features | **0,192** | référence publiée |
+| `vix_lvl` seul (k-NN) | 0,216 | **mieux que le moteur complet** |
+| **8 features macro, sans `vix_lvl`** | **−0,057** | **aucune information** |
+| Percentile expanding du VIX | 0,277 | |
+| **OLS causale `ΔVIX ~ a + b·VIX`** | **0,322** | **bat le moteur, ΔIC [−0,181 ; −0,076], 15/15 années positives** |
+
+Confirmé sans le confondant « k-NN bruité » : en **paramétrique**, `ΔVIX ~ VIX + 8 macro` donne 0,233 contre **0,322** pour `ΔVIX ~ VIX` seul (ΔIC −0,089 [−0,114 ; −0,054], P=0,00 aux 3 horizons). Sur le **résidu causal** du niveau, le k-NN macro est au plancher d'artefact de la procédure (|IC| ≤ 0,09, contrôle inclus).
+
+> **RÈGLE DURE (remplace « le vrai edge = timing de la volatilité »)** : `vix_lvl` est dans le vecteur de régime **et** ΔVIX est la cible → toute performance sur ΔVIX doit être mesurée **en incrémental d'une baseline de niveau** (OLS causale expanding), jamais dans l'absolu. Formulation honnête de l'état actuel : *le moteur ne possède pas d'edge macro démontré ; son seul résultat OOS positif est la réversion du niveau du VIX spot, qu'une AR triviale capture mieux, et qui ne survit pas au passage à l'instrument (IC 0,04 sur VIXY).*
+
+Seul signal résiduel net : **`ts_slope` (VIX3M/VIX)**, IC 0,17-0,21 sur le résidu — mais c'est une variable de **surface de vol**, pas macro, et quasi tautologique (les futures pricent la réversion attendue). Seul candidat macro non trivial : **`slope` 2s10s** (IC résiduel −0,05 → −0,10, croissant en horizon) — hypothèse à tester isolément, pas un résultat.
+
+Généralisation du **piège de la persistance** déjà identifié en §5(E) : ce qui avait tué la vol réalisée tue aussi la cible VIX.
 
 ## 4ter. v1.1 (2026-07-24) — améliorations post-review mentor
 - **(A) Winsorizing ±2,5σ** sur toutes les features avant Mahalanobis → un outlier de crise (`brent_mom` −2,6σ) ne peut plus écraser la distance. **Mesuré : RENFORCE le VIX** (IC OOS 0,170→**0,202**, hold-out test 0,16→0,19, 14/15 ans). Moteur + backtest.
@@ -146,9 +168,12 @@ Un base rate n'a de valeur que s'il **prédit hors-échantillon**. Backtest caus
 
 ## 5. Roadmap v2 (reste à faire)
 - ~~**(E) Cible vol réalisée**~~ → **TESTÉ 2026-07-24, NÉGATIF** : IC niveau 0,22-0,53 mais = **pure persistance** (clustering) ; Δvol (le vrai test) ≈ 0 → pas de 2ᵉ étoile. Détail : [[2026-07-24 - Test E — Vol realisee (piege persistance)]] · fiche [[Vol realisee — niveau vs changement (piege persistance)]].
+- ~~**(F) Ablation VIX vs baselines de niveau**~~ → **TESTÉ 2026-07-27, NÉGATIF** : les 8 features macro n'ont **aucune** information sur ΔVIX (IC −0,06 seules ; dégradent l'IC en paramétrique) ; une OLS `ΔVIX ~ VIX` **bat** le moteur (0,322 vs 0,192). Détail : [[Macro/Quant/research/2026-07-27 - Ablation VIX (baselines mean-reversion)]] · cf. §4bis-b.
+- ~~Covariance **expanding** pour la métrique~~ → **déjà fait dans le backtest** depuis le 14/07 (`build_metric(upto_pos)`, refresh 63 j). Reste : la porter dans `macro_quant_engine.py` — sans urgence, l'engine ne tourne qu'en live (« plein échantillon » = tout ≤ aujourd'hui, donc pas de look-ahead réel). Cf. caveat §6.
+- **Priorité 1 — changer de cible** : le moteur n'a jamais été testé comme **classifieur de régime** (reflation/stagflation/risk-off), ce pour quoi il est bâti, plutôt que comme prédicteur de rendement. Cible catégorielle honnête = non testée.
+- **Priorité 2 — `ts_slope` (VIX3M/VIX) orthogonalisé** au niveau plutôt qu'ajouté linéairement : seul résidu prédictible identifié (IC 0,17-0,21), mais l'ajout naïf dégrade l'OOS (colinéarité avec le niveau).
+- **Priorité 3 — `slope` 2s10s testée isolément** (IC résiduel −0,05 → −0,10, croissant en horizon), hold-out dédié, sans les 7 autres features autour.
+- **Abandonner ΔVIX spot comme métrique de validation** : dominée par la réversion de niveau, et non tradable. Unité de compte = P&L d'un instrument.
 - Second proxy croissance (cycliques/défensives XLY/XLP) en complément du cuivre/or.
-- Covariance **expanding** pour la métrique (causalité pleine).
-- Test de robustesse : sensibilité du lift à k, L, fenêtre de départ.
-- Covariance **expanding** pour la métrique (causalité pleine).
 - Séparer un **sous-régime oil** du régime taux/vol.
 - Test de robustesse : sensibilité du lift à k, L, fenêtre de départ.

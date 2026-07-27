@@ -31,6 +31,25 @@ python3 engine/macro_quant_backtest.py   # backtest + robustesse (DSR / PBO / ho
 python3 engine/macro_quant_daily.py      # persiste le run du jour dans db/
 ```
 
+### Variante conda (+ Jupyter)
+
+Alternative au venv, si tu veux aussi explorer en notebook :
+
+```bash
+conda env create -f environment.yml
+conda activate macro-quant
+python -m ipykernel install --user --name macro-quant --display-name "Python (macro-quant)"
+
+jupyter lab                 # puis ouvre notebooks/00_start.ipynb
+```
+
+`environment.yml` = python 3.11 + numpy/matplotlib (les seules deps du moteur) + jupyterlab,
+pandas et scipy pour l'exploration. `notebooks/00_start.ipynb` importe le moteur et donne
+accès aux objets internes (features, analogues, base rates) pour bricoler à la main.
+
+> `import macro_quant_engine` **exécute tout le pipeline** (pas de garde `__main__`) — c'est
+> voulu : après l'import, `mq.Z`, `mq.D`, `mq.LV`… sont directement dispo dans le notebook.
+
 ---
 
 ## C'est quoi

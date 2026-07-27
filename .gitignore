@@ -3,3 +3,5 @@ __pycache__/
 /tmp/
 fredcache/
 .DS_Store
+.ipynb_checkpoints/
+.venv/
