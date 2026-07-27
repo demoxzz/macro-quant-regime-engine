@@ -1,1 +1,2 @@
 numpy>=1.21
+matplotlib>=3.5   # pour les scripts de figures (dashboard, analyze_db, robustesse)

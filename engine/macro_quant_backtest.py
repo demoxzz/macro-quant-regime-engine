@@ -59,7 +59,21 @@ NAME = {
     "T10Y2Y":"Pente 2s10s","VIXCLS":"VIX","MOVE":"MOVE (vol taux)","BTCUSD":"Bitcoin","GOLD":"Or (GC)","DTWEXBGS":"USD broad","DEXUSEU":"EUR/USD",
     "DCOILBRENTEU":"Brent","DCOILWTICO":"WTI","NASDAQCOM":"Nasdaq Comp.",
 }
-ALL = sorted(set(COND_SERIES) | set(RESP_BT))
+# (E) CIBLES VOL RÉALISÉE : pseudo-assets kind="rvol" -> vol réalisée annualisée forward
+#     du prix de base. Test du 2nd moment sur des assets non-actions (oil/BTC/or) + S&P (contrôle).
+RVOL = {"RV_OIL":"DCOILBRENTEU", "RV_BTC":"BTCUSD", "RV_GOLD":"GOLD", "RV_SPX":"SP500"}
+RVCHG = {"RVC_OIL":"DCOILBRENTEU", "RVC_BTC":"BTCUSD", "RVC_GOLD":"GOLD", "RVC_SPX":"SP500"}
+NAME.update({"RV_OIL":"Vol réal. Oil","RV_BTC":"Vol réal. BTC","RV_GOLD":"Vol réal. Or","RV_SPX":"Vol réal. S&P",
+             "RVC_OIL":"ΔVol Oil","RVC_BTC":"ΔVol BTC","RVC_GOLD":"ΔVol Or","RVC_SPX":"ΔVol S&P","SP500":"S&P 500"})
+# (E) TESTÉ 2026-07-24 -> NÉGATIF : rvol (NIVEAU) IC OOS 0,22-0,53 mais = pure PERSISTANCE
+#     (clustering GARCH) ; rvchg (Δ vol = expansion, le vrai test) IC ≈ 0 partout -> le régime
+#     ne prédit PAS le changement de vol. Pas de 2ᵉ étoile. Désactivé ; TEST_RVOL=True pour re-tester.
+TEST_RVOL = False
+if TEST_RVOL:
+    for rid in RVOL:  RESP_BT.append(rid); KIND[rid]="rvol"
+    for rid in RVCHG: RESP_BT.append(rid); KIND[rid]="rvchg"
+    if "SP500" not in RESP_BT: RESP_BT.append("SP500"); KIND["SP500"]="price"
+ALL = sorted((set(COND_SERIES) | set(RESP_BT)) - set(RVOL) - set(RVCHG))   # pseudo-assets, pas de fetch
 
 def fetch(sid):
     fp = os.path.join(CACHE, sid + ".csv")
@@ -143,6 +157,16 @@ HORIZONS=[5,10,20]
 def fwd(sid,t,h):
     k=KIND[sid];
     if t+h>=N: return np.nan
+    if k in ("rvol","rvchg"):          # (E) vol réalisée (niveau) ou son Δlog forward/trailing
+        base = RVOL[sid] if k=="rvol" else RVCHG[sid]
+        def _rv(i0,i1):
+            p=LV[base][i0:i1+1]; p=p[np.isfinite(p)]
+            if len(p)<max(3,h//2) or np.any(p<=0): return np.nan
+            r=np.diff(np.log(p))
+            return float(np.std(r)*math.sqrt(252)*100.0) if len(r)>=2 else np.nan
+        if k=="rvol": return _rv(t, t+h)
+        rf, rb = _rv(t, t+h), _rv(t-h, t)   # forward vs trailing (causal)
+        return math.log(rf/rb)*100.0 if (t-h>=0 and rf and rb and rf>0 and rb>0) else np.nan
     a,b=LV[sid][t],LV[sid][t+h]
     if not(math.isfinite(a) and math.isfinite(b)): return np.nan
     if k=="price":
@@ -482,3 +506,69 @@ report["robustness"]=dict(trial_var=V,n_trials=len(trial_sr),dsr=dsr_report,
                           holdout={s:ho[s] for s in ho},best_train=best_train)
 with open("/tmp/macro_quant_backtest.json","w") as f: json.dump(report,f,indent=2,default=float)
 print("\n[5] robustesse -> /tmp/macro_quant_backtest.json (cle 'robustness')", file=sys.stderr)
+
+# ================================================================== #
+#  C5 — VERS LA RENTABILITÉ : le signal VIX survit-il au CONTANGO + coûts
+#  sur l'instrument TRADABLE (VIXY) ?  (make-or-break, retour Amundi)
+#  Réutilise le signal causal rec["VIXCLS"] (pred_mean = ΔVIX prédit).
+# ================================================================== #
+H0=10
+_vixy=align(yfetch.fetch("VIXY"))                 # ETF futures VIX court-terme (contango inclus)
+_pos={d:i for i,d in enumerate(cal)}
+r=rec["VIXCLS"][H0]
+sig=np.array(r["pred_mean"],float); sdates=r["date"]
+# rendement forward VIXY (log %) sur H0 j, aligné aux dates de décision
+vret=np.full(len(sdates),np.nan); vixreal=np.array(r["real"],float)
+for k,d in enumerate(sdates):
+    i=_pos.get(d)
+    if i is None or i+H0>=N: continue
+    a,b=_vixy[i],_vixy[i+H0]
+    if math.isfinite(a) and math.isfinite(b) and a>0 and b>0: vret[k]=math.log(b/a)*100.0
+m=np.isfinite(sig)&np.isfinite(vret)
+sig,vret,vixreal=sig[m],vret[m],vixreal[m]
+yrs=np.array([int(sdates[k][:4]) for k in range(len(sdates)) if m[k]])
+
+print("\n================ C5 — SIGNAL VIX sur VIXY (tradable, net de coûts) ================")
+ic_spot=pearson(sig,vixreal); ic_vixy=pearson(sig,vret)
+print(f"  IC signal↔ΔVIX spot  = {ic_spot:+.3f}   (ce qu'on avait)")
+print(f"  IC signal↔rendement VIXY = {ic_vixy:+.3f}   (le vrai test : prédit-il l'instrument ?)")
+
+# --- stratégies sur pas NON chevauchants (H0), seuil causal = médiane glissante ---
+step=np.arange(0,len(sig),H0)
+ss,rr,yy=sig[step],vret[step],yrs[step]
+thr=np.array([np.median(ss[:i]) if i>=10 else 0.0 for i in range(len(ss))])
+up=ss>thr                                        # régime "vol-up" prédit
+def _sharpe(x):
+    x=x[np.isfinite(x)]; ann=math.sqrt(252.0/H0)
+    return float(np.mean(x)/(np.std(x)+1e-12)*ann) if len(x)>2 else float('nan')
+def _cagr(x):                                    # rendement annualisé approx (somme log * périodes/an)
+    x=x[np.isfinite(x)]; return float(np.sum(x)*(252.0/H0)/max(len(x),1))
+def _mdd(x):                                     # max drawdown sur equity cumulée
+    e=np.cumsum(x); peak=np.maximum.accumulate(e); return float(np.min(e-peak))
+def _run(pos,cost_bp):
+    pos=np.asarray(pos,float); chg=np.abs(np.diff(np.concatenate([[0],pos])))
+    pnl=pos*rr - cost_bp*chg                     # coût par changement de position (bps aller)
+    return pnl
+STRATS={
+ "B&H VIXY (long vol)": np.ones(len(rr)),
+ "Short-vol (carry)":   -np.ones(len(rr)),
+ "Signal long/flat":    up.astype(float),
+ "Signal long/short":   np.where(up,1.0,-1.0),
+ "Carry + filtre vol-up": np.where(up,0.0,-1.0),   # short le carry SAUF quand spike prédit -> flat
+}
+for CB in (0.05,0.15):                            # coûts aller : 5 bps (optimiste) / 15 bps (stress)
+    print(f"\n  --- coûts {CB*100:.0f} bps/aller ---")
+    print(f"  {'stratégie':22} {'Sharpe':>7} {'ret/an%':>8} {'maxDD':>7} {'Shp<19':>7} {'Shp>=19':>8}")
+    srs=[]
+    for nm,pos in STRATS.items():
+        pnl=_run(pos,CB); sh=_sharpe(pnl); srs.append(_sr_moments(pnl)[0])
+        tr=pnl[yy<2019]; te=pnl[yy>=2019]
+        print(f"  {nm:22} {sh:>7.2f} {_cagr(pnl):>8.1f} {_mdd(pnl):>7.0f} {_sharpe(tr):>7.2f} {_sharpe(te):>8.2f}")
+    # DSR sur la meilleure (au coût 15bps), N essais = 5 stratégies
+    if CB==0.15:
+        srs=[s for s in srs if np.isfinite(s)]; V=float(np.var(srs)) if len(srs)>1 else 0.0
+        best=max(STRATS,key=lambda k:_sharpe(_run(STRATS[k],CB)))
+        pb=_run(STRATS[best],CB); sr,sk,ku,T=_sr_moments(pb)
+        dsr=_psr(sr,_emax_sr(V,5),sk,ku,T)
+        print(f"  -> meilleure @15bps = «{best}» ; DSR (N=5 essais) = {dsr:.2f}  ({'ROBUSTE' if dsr>0.95 else 'PAS robuste'})")
+print("\n  Rappel : B&H VIXY = la saignée du contango ; le signal a de la valeur s'il BAT le carry nu OOS.")

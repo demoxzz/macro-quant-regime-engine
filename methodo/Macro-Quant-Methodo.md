@@ -145,7 +145,7 @@ Un base rate n'a de valeur que s'il **prédit hors-échantillon**. Backtest caus
 - **Non-FRED via Yahoo** : MOVE `^MOVE`, BTC `BTC-USD`, Or `GC=F`, cuivre `HG=F` — MOVE/BTC/Or resp-only **réfutés OOS** ; cuivre = input feature growth (VIX reste seul asset validé).
 
 ## 5. Roadmap v2 (reste à faire)
-- **(E) Cible vol réalisée** (S&P/oil/BTC) : chercher une 2ᵉ étoile sur le **2nd moment** (pas la direction).
+- ~~**(E) Cible vol réalisée**~~ → **TESTÉ 2026-07-24, NÉGATIF** : IC niveau 0,22-0,53 mais = **pure persistance** (clustering) ; Δvol (le vrai test) ≈ 0 → pas de 2ᵉ étoile. Détail : [[2026-07-24 - Test E — Vol realisee (piege persistance)]] · fiche [[Vol realisee — niveau vs changement (piege persistance)]].
 - Second proxy croissance (cycliques/défensives XLY/XLP) en complément du cuivre/or.
 - Covariance **expanding** pour la métrique (causalité pleine).
 - Test de robustesse : sensibilité du lift à k, L, fenêtre de départ.

@@ -15,7 +15,7 @@ methode: "base rates conditionnels au régime (k-NN Mahalanobis, 2007-2026) + wi
 instruments: ["taux", "vol", "fx", "commodities", "indices", "credit", "crypto"]
 tags: [type/quant, topic/quant, topic/macro, topic/daily, statut/draft]
 source: "FRED+Yahoo via macro_quant_daily.py (run 2026-07-24, as-of 2026-07-22)"
-sources: ["[[Wiki/macro/Macro-Quant-Methodo]]", "[[Macro/Quant/analysis/macro-quant/2026-07-23 - Backtest Robustesse (DSR PBO Holdout)]]"]
+sources: ["[[Wiki/macro/Macro-Quant-Methodo]]", "[[Macro/Quant/research/2026-07-23 - Backtest Robustesse (DSR PBO Holdout)]]"]
 related: ["[[Macro/Daily/2026-07-24 - Macro Daily]]", "[[Macro/Quant/analysis/macro-quant/2026-07-23 - Macro Quant Daily]]"]
 ---
 
@@ -104,7 +104,7 @@ related: ["[[Macro/Daily/2026-07-24 - Macro Daily]]", "[[Macro/Quant/analysis/ma
 
 | Dimension | Couche 1 (daily live 24/07) | Couche 2 (quant as-of 22/07) | Verdict |
 |---|---|---|---|
-| **Oil** | Brent >$100, 5ᵉ séance ↑ | `brent_mom` +1,64σ (frais), base rate oil +0,6% | ✅ **convergent** (oil frais, écart réduit) |
+| **Oil** | Brent **~$92** (BZ=F 24/07, 5ᵉ séance ↑) [⚠️ le daily narratif disait « >$100 » — **erreur de Couche 1**, la donnée réelle = $91,78] | `brent_mom` +1,64σ (frais), base rate oil +0,6% | ✅ **convergent** (oil frais) |
 | **Taux / hawkish** | hike Sept ~80%, US10 4,70% | taux se tendent fort, base rate yields ↑↑ | ✅ **convergent fort** |
 | **Vol** | VIX contenu 18,7 | VIX calme (−0,36σ) mais forward **+0,59 pt** | ✅ convergent ; ⚠️ C2 penche *up* |
 | **Actions** | semis blowout Intel, pas de crash | muet / léger biais baissier | ⚖️ C2 sans edge → priorité C1 |
