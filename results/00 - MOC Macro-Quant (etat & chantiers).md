@@ -35,7 +35,7 @@ Dire **à quelle fréquence** un régime historiquement comparable a été suivi
 | **C3** | Jambes du régime (inflation + **croissance** cuivre/or → reflation vs stagflation) | ✅ | daily [[Macro/Quant/analysis/macro-quant/2026-07-24 - Macro Quant Daily]] |
 | **C4** | Base de données & vintage point-in-time + lecture cross-day | ✅ | `Macro/Quant/db/SCHEMA.md` · `analyze_db.py` |
 | **C5** | **VERS LA RENTABILITÉ** (instrument tradable, coûts, strat dynamique) | 🔄 | **Phase 1 faite** : edge VIX **non tradable standalone** (IC 0,19→0,04 sur VIXY, contango) ; piste = **overlay de dé-risquage sur carry**. [[Macro/Quant/research/2026-07-24 - C5 Rentabilite — Signal VIX sur VIXY (contango)]] |
-| **C6** | Vision v3 — **AMT regime-detection** (quand le retour-à-la-valeur est actif) | ⬜ | idée mentor AMT + buy-side (« le jackpot ») |
+| **C6** | **AMT regime-detection** (projet sœur, pas v1) — quand le fade/retour-à-la-valeur marche | ⏸️ **pause** | step-1 fait : look-ahead levé, **hypothèse balance/trend RÉFUTÉE à 60m** ; reprendre si data 5m. [[Macro/Quant/amt-regime/2026-07-27 - C6 step1 — Thermometre causal (hypothese refutee 60m)]] |
 
 ---
 
@@ -43,7 +43,7 @@ Dire **à quelle fréquence** un régime historiquement comparable a été suivi
 
 | Asset / cible | Statut OOS | Rôle |
 |---|:--:|---|
-| **VIX** (Δ implicite) | ✅ **VALIDÉ** — IC 0,19 @10j (t 3,6), 12-14/15 ans, hold-out 0,19, médiane 80-95% | **seul edge** — timing de vol |
+| **VIX** (Δ implicite) | ✅ **VALIDÉ** — IC 0,19 @10j (t 3,6), 12-14/15 ans, hold-out 0,19 ; **⚠️ capture ~1% de la queue** | **seul edge — timing de vol EN MOYENNE. PAS une protection anti-krach** (aveugle aux spikes) |
 | Actions / USD / FX / taux / oil (direction) | ❌ bruit OOS | contexte de régime |
 | **MOVE** (vol taux) | ❌ réfuté (IC instable) | contexte |
 | **BTC** (direction) | ❌ réfuté (overfit : IS 0,17 → OOS −0,06) | contexte |
@@ -65,7 +65,9 @@ Dire **à quelle fréquence** un régime historiquement comparable a été suivi
 | 24/07 | Winsor ±2,5σ | ✅ renforce VIX (0,17→0,20) | daily 24/07 |
 | 24/07 | Jambe croissance (cuivre/or) | ✅ gardée (VIX survit) — tranche reflation/stagflation | daily 24/07 |
 | 24/07 | Vol réalisée (E) | réfuté (persistance) | [[Macro/Quant/research/2026-07-24 - Test E — Vol realisee (piege persistance)]] |
-| 24/07 | **C5 — signal sur VIXY (contango)** | edge **non tradable standalone** (IC 0,04) ; valeur = **overlay carry** ; rien ne passe DSR encore | [[Macro/Quant/research/2026-07-24 - C5 Rentabilite — Signal VIX sur VIXY (contango)]] |
+| 24/07 | **C5 — signal sur VIXY (contango)** | edge **non tradable standalone** (IC 0,04) ; overlay carry surestimé ; rien ne passe DSR | [[Macro/Quant/research/2026-07-24 - C5 Rentabilite — Signal VIX sur VIXY (contango)]] |
+| 24/07 | **Test de queue (critique PG)** | signal **aveugle aux krachs** : capture ~1% de la queue (mars 2020 +49 prédit −2) ; **winsor innocenté** (1% avec/sans). IC moyen ≠ résistance de queue | méthodo §v1.1 + C5 §queue |
+| 27/07 | **C6 step-1 — thermomètre AVWAP causal** | look-ahead levé ; **hypothèse balance/trend RÉFUTÉE à 60m** (2 classifieurs causaux, signe inversé) → artefact ; C6 en pause pending data 5m | [[Macro/Quant/amt-regime/2026-07-27 - C6 step1 — Thermometre causal (hypothese refutee 60m)]] |
 
 ---
 

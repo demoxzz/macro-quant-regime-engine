@@ -1,0 +1,1528 @@
+{
+  "asof": "2026-07-22",
+  "n_analog": 244,
+  "maha_radius": 1.9116809145147828,
+  "k_impulse": 5,
+  "winsor": 2.5,
+  "pca_varexp": [
+    0.23038263821670982,
+    0.19018434209318386,
+    0.12871834472188165,
+    0.1270245914641084,
+    0.0967282871159868
+  ],
+  "regime_today": {
+    "d10_5": 0.7874006741925615,
+    "dreal_5": 0.6140440480793956,
+    "dbe_5": 0.6226790669606607,
+    "vix_lvl": -0.3625973874974153,
+    "slope": -0.5323413229417495,
+    "dusd_5": 0.2109076644109811,
+    "brwti": 0.37007605794861437,
+    "brent_mom": 1.6367317549580966,
+    "growth": 0.6446501542529968
+  },
+  "feature_dominance": {
+    "feature": "brent_mom",
+    "pct": 0.5278034505808814,
+    "flag": true,
+    "shares": {
+      "d10_5": 0.12215430381073755,
+      "dreal_5": 0.07428758847424223,
+      "dbe_5": 0.07639162356130857,
+      "vix_lvl": 0.02590398319481085,
+      "slope": 0.05583384895735536,
+      "dusd_5": 0.008763991203022528,
+      "brwti": 0.02698355629879316,
+      "brent_mom": 0.5278034505808814,
+      "growth": 0.08187765391884831
+    }
+  },
+  "assets": {
+    "DFF": {
+      "name": "Fed Funds eff.",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.279,
+          "mean_uncond": -0.167,
+          "lift_mean": 0.446,
+          "median_cond": 0.0,
+          "pneg_cond": 9.8,
+          "pneg_uncond": 22.0,
+          "lift_pneg": -12.1,
+          "ci90_mean": [
+            -0.455,
+            0.939
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.828,
+          "mean_uncond": -0.335,
+          "lift_mean": 1.163,
+          "median_cond": 0.0,
+          "pneg_cond": 13.5,
+          "pneg_uncond": 24.9,
+          "lift_pneg": -11.4,
+          "ci90_mean": [
+            -0.332,
+            2.02
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 1.561,
+          "mean_uncond": -0.672,
+          "lift_mean": 2.234,
+          "median_cond": 0.0,
+          "pneg_cond": 18.4,
+          "pneg_uncond": 30.2,
+          "lift_pneg": -11.8,
+          "ci90_mean": [
+            0.586,
+            2.504
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DGS2": {
+      "name": "UST 2Y",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 1.549,
+          "mean_uncond": -0.076,
+          "lift_mean": 1.625,
+          "median_cond": 0.0,
+          "pneg_cond": 43.4,
+          "pneg_uncond": 45.1,
+          "lift_pneg": -1.7,
+          "ci90_mean": [
+            0.566,
+            2.591
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 1.689,
+          "mean_uncond": -0.153,
+          "lift_mean": 1.841,
+          "median_cond": 1.0,
+          "pneg_cond": 42.6,
+          "pneg_uncond": 47.0,
+          "lift_pneg": -4.4,
+          "ci90_mean": [
+            0.594,
+            2.783
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 4.029,
+          "mean_uncond": -0.311,
+          "lift_mean": 4.339,
+          "median_cond": 1.5,
+          "pneg_cond": 44.3,
+          "pneg_uncond": 46.7,
+          "lift_pneg": -2.4,
+          "ci90_mean": [
+            2.495,
+            5.661
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DGS5": {
+      "name": "UST 5Y",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 1.676,
+          "mean_uncond": -0.058,
+          "lift_mean": 1.734,
+          "median_cond": 0.0,
+          "pneg_cond": 44.3,
+          "pneg_uncond": 48.3,
+          "lift_pneg": -4.0,
+          "ci90_mean": [
+            0.635,
+            2.681
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 2.467,
+          "mean_uncond": -0.11,
+          "lift_mean": 2.577,
+          "median_cond": 2.0,
+          "pneg_cond": 42.6,
+          "pneg_uncond": 49.5,
+          "lift_pneg": -6.9,
+          "ci90_mean": [
+            1.02,
+            3.775
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 4.828,
+          "mean_uncond": -0.22,
+          "lift_mean": 5.047,
+          "median_cond": 2.5,
+          "pneg_cond": 44.7,
+          "pneg_uncond": 49.8,
+          "lift_pneg": -5.1,
+          "ci90_mean": [
+            3.209,
+            6.562
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DGS10": {
+      "name": "UST 10Y",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 1.541,
+          "mean_uncond": -0.033,
+          "lift_mean": 1.574,
+          "median_cond": 0.5,
+          "pneg_cond": 45.1,
+          "pneg_uncond": 49.1,
+          "lift_pneg": -4.0,
+          "ci90_mean": [
+            0.582,
+            2.423
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 3.037,
+          "mean_uncond": -0.059,
+          "lift_mean": 3.096,
+          "median_cond": 2.5,
+          "pneg_cond": 41.8,
+          "pneg_uncond": 48.6,
+          "lift_pneg": -6.8,
+          "ci90_mean": [
+            1.75,
+            4.279
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 4.93,
+          "mean_uncond": -0.112,
+          "lift_mean": 5.043,
+          "median_cond": 2.0,
+          "pneg_cond": 44.7,
+          "pneg_uncond": 49.3,
+          "lift_pneg": -4.6,
+          "ci90_mean": [
+            3.184,
+            6.496
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DGS30": {
+      "name": "UST 30Y",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 1.016,
+          "mean_uncond": 0.007,
+          "lift_mean": 1.01,
+          "median_cond": 0.0,
+          "pneg_cond": 48.0,
+          "pneg_uncond": 49.3,
+          "lift_pneg": -1.4,
+          "ci90_mean": [
+            0.119,
+            1.877
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 2.91,
+          "mean_uncond": 0.022,
+          "lift_mean": 2.888,
+          "median_cond": 2.0,
+          "pneg_cond": 41.4,
+          "pneg_uncond": 48.7,
+          "lift_pneg": -7.3,
+          "ci90_mean": [
+            1.721,
+            4.078
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 4.143,
+          "mean_uncond": 0.054,
+          "lift_mean": 4.089,
+          "median_cond": 2.5,
+          "pneg_cond": 44.7,
+          "pneg_uncond": 48.1,
+          "lift_pneg": -3.5,
+          "ci90_mean": [
+            2.504,
+            5.717
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DFII10": {
+      "name": "UST 10Y reel (TIPS)",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 1.365,
+          "mean_uncond": -0.028,
+          "lift_mean": 1.393,
+          "median_cond": 0.0,
+          "pneg_cond": 46.7,
+          "pneg_uncond": 49.6,
+          "lift_pneg": -2.8,
+          "ci90_mean": [
+            0.352,
+            2.406
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 1.947,
+          "mean_uncond": -0.046,
+          "lift_mean": 1.993,
+          "median_cond": 0.0,
+          "pneg_cond": 46.3,
+          "pneg_uncond": 49.9,
+          "lift_pneg": -3.6,
+          "ci90_mean": [
+            0.701,
+            3.131
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 3.066,
+          "mean_uncond": -0.066,
+          "lift_mean": 3.131,
+          "median_cond": 0.0,
+          "pneg_cond": 48.8,
+          "pneg_uncond": 52.0,
+          "lift_pneg": -3.2,
+          "ci90_mean": [
+            1.553,
+            4.463
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "T10YIE": {
+      "name": "Breakeven 10Y",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.176,
+          "mean_uncond": -0.005,
+          "lift_mean": 0.181,
+          "median_cond": 0.0,
+          "pneg_cond": 42.6,
+          "pneg_uncond": 46.2,
+          "lift_pneg": -3.5,
+          "ci90_mean": [
+            -0.324,
+            0.672
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 1.09,
+          "mean_uncond": -0.013,
+          "lift_mean": 1.103,
+          "median_cond": 1.0,
+          "pneg_cond": 43.4,
+          "pneg_uncond": 46.6,
+          "lift_pneg": -3.2,
+          "ci90_mean": [
+            0.189,
+            1.975
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 1.865,
+          "mean_uncond": -0.046,
+          "lift_mean": 1.911,
+          "median_cond": 2.0,
+          "pneg_cond": 42.2,
+          "pneg_uncond": 47.1,
+          "lift_pneg": -4.9,
+          "ci90_mean": [
+            0.475,
+            3.218
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "T10Y2Y": {
+      "name": "Pente 2s10s",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": -0.008,
+          "mean_uncond": 0.043,
+          "lift_mean": -0.051,
+          "median_cond": -1.0,
+          "pneg_cond": 50.8,
+          "pneg_uncond": 49.5,
+          "lift_pneg": 1.3,
+          "ci90_mean": [
+            -0.701,
+            0.742
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 1.348,
+          "mean_uncond": 0.094,
+          "lift_mean": 1.255,
+          "median_cond": 0.5,
+          "pneg_cond": 42.6,
+          "pneg_uncond": 49.3,
+          "lift_pneg": -6.6,
+          "ci90_mean": [
+            0.504,
+            2.189
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.902,
+          "mean_uncond": 0.198,
+          "lift_mean": 0.703,
+          "median_cond": -1.0,
+          "pneg_cond": 51.6,
+          "pneg_uncond": 51.0,
+          "lift_pneg": 0.7,
+          "ci90_mean": [
+            -0.361,
+            2.099
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "BAMLH0A0HYM2": {
+      "name": "HY OAS (credit)",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 61,
+          "n_eff": 12.2,
+          "mean_cond": 0.754,
+          "mean_uncond": -0.717,
+          "lift_mean": 1.471,
+          "median_cond": -2.0,
+          "pneg_cond": 52.5,
+          "pneg_uncond": 55.1,
+          "lift_pneg": -2.6,
+          "ci90_mean": [
+            -1.82,
+            3.541
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        },
+        "10": {
+          "n": 61,
+          "n_eff": 6.1,
+          "mean_cond": 1.754,
+          "mean_uncond": -1.563,
+          "lift_mean": 3.317,
+          "median_cond": 0.0,
+          "pneg_cond": 45.9,
+          "pneg_uncond": 56.9,
+          "lift_pneg": -11.0,
+          "ci90_mean": [
+            -0.721,
+            4.132
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        },
+        "20": {
+          "n": 61,
+          "n_eff": 3.0,
+          "mean_cond": 1.934,
+          "mean_uncond": -3.209,
+          "lift_mean": 5.143,
+          "median_cond": -2.0,
+          "pneg_cond": 52.5,
+          "pneg_uncond": 60.0,
+          "lift_pneg": -7.6,
+          "ci90_mean": [
+            -2.131,
+            6.002
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "BAMLC0A0CM": {
+      "name": "IG OAS (credit)",
+      "kind": "yield",
+      "h": {
+        "5": {
+          "n": 61,
+          "n_eff": 12.2,
+          "mean_cond": 0.082,
+          "mean_uncond": -0.309,
+          "lift_mean": 0.391,
+          "median_cond": 0.0,
+          "pneg_cond": 44.3,
+          "pneg_uncond": 50.5,
+          "lift_pneg": -6.3,
+          "ci90_mean": [
+            -0.525,
+            0.722
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        },
+        "10": {
+          "n": 61,
+          "n_eff": 6.1,
+          "mean_cond": 0.475,
+          "mean_uncond": -0.622,
+          "lift_mean": 1.098,
+          "median_cond": 0.0,
+          "pneg_cond": 44.3,
+          "pneg_uncond": 52.2,
+          "lift_pneg": -7.9,
+          "ci90_mean": [
+            -0.23,
+            1.148
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        },
+        "20": {
+          "n": 61,
+          "n_eff": 3.0,
+          "mean_cond": 0.705,
+          "mean_uncond": -1.253,
+          "lift_mean": 1.958,
+          "median_cond": 0.0,
+          "pneg_cond": 41.0,
+          "pneg_uncond": 58.1,
+          "lift_pneg": -17.1,
+          "ci90_mean": [
+            -0.082,
+            1.508
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "VIXCLS": {
+      "name": "VIX",
+      "kind": "vol",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.427,
+          "mean_uncond": 0.008,
+          "lift_mean": 0.418,
+          "median_cond": -0.02,
+          "pneg_cond": 50.4,
+          "pneg_uncond": 53.4,
+          "lift_pneg": -3.0,
+          "ci90_mean": [
+            0.162,
+            0.695
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.61,
+          "mean_uncond": 0.015,
+          "lift_mean": 0.595,
+          "median_cond": 0.125,
+          "pneg_cond": 48.0,
+          "pneg_uncond": 53.5,
+          "lift_pneg": -5.6,
+          "ci90_mean": [
+            0.351,
+            0.866
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.598,
+          "mean_uncond": 0.028,
+          "lift_mean": 0.57,
+          "median_cond": -0.265,
+          "pneg_cond": 52.5,
+          "pneg_uncond": 53.8,
+          "lift_pneg": -1.4,
+          "ci90_mean": [
+            0.22,
+            0.958
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "MOVE": {
+      "name": "MOVE (vol taux)",
+      "kind": "vol",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.5,
+          "mean_uncond": 0.009,
+          "lift_mean": 0.491,
+          "median_cond": -0.35,
+          "pneg_cond": 52.9,
+          "pneg_uncond": 52.6,
+          "lift_pneg": 0.2,
+          "ci90_mean": [
+            -0.275,
+            1.238
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 2.054,
+          "mean_uncond": 0.023,
+          "lift_mean": 2.03,
+          "median_cond": 0.78,
+          "pneg_cond": 45.1,
+          "pneg_uncond": 52.7,
+          "lift_pneg": -7.6,
+          "ci90_mean": [
+            1.283,
+            2.849
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 2.844,
+          "mean_uncond": 0.05,
+          "lift_mean": 2.794,
+          "median_cond": 0.915,
+          "pneg_cond": 43.4,
+          "pneg_uncond": 54.0,
+          "lift_pneg": -10.5,
+          "ci90_mean": [
+            1.739,
+            4.019
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DTWEXBGS": {
+      "name": "USD broad",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.009,
+          "mean_uncond": 0.022,
+          "lift_mean": -0.013,
+          "median_cond": -0.068,
+          "pneg_cond": 53.7,
+          "pneg_uncond": 50.1,
+          "lift_pneg": 3.6,
+          "ci90_mean": [
+            -0.061,
+            0.08
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.123,
+          "mean_uncond": 0.044,
+          "lift_mean": 0.08,
+          "median_cond": 0.136,
+          "pneg_cond": 46.3,
+          "pneg_uncond": 49.3,
+          "lift_pneg": -3.0,
+          "ci90_mean": [
+            0.041,
+            0.205
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.527,
+          "mean_uncond": 0.086,
+          "lift_mean": 0.44,
+          "median_cond": 0.378,
+          "pneg_cond": 40.2,
+          "pneg_uncond": 51.2,
+          "lift_pneg": -11.0,
+          "ci90_mean": [
+            0.421,
+            0.641
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DEXJPUS": {
+      "name": "USD/JPY",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.011,
+          "mean_uncond": 0.031,
+          "lift_mean": -0.02,
+          "median_cond": 0.027,
+          "pneg_cond": 48.4,
+          "pneg_uncond": 46.5,
+          "lift_pneg": 1.9,
+          "ci90_mean": [
+            -0.11,
+            0.124
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.177,
+          "mean_uncond": 0.061,
+          "lift_mean": 0.117,
+          "median_cond": 0.289,
+          "pneg_cond": 38.5,
+          "pneg_uncond": 47.3,
+          "lift_pneg": -8.8,
+          "ci90_mean": [
+            0.021,
+            0.322
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.604,
+          "mean_uncond": 0.121,
+          "lift_mean": 0.483,
+          "median_cond": 0.657,
+          "pneg_cond": 33.2,
+          "pneg_uncond": 47.0,
+          "lift_pneg": -13.8,
+          "ci90_mean": [
+            0.418,
+            0.795
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DEXUSEU": {
+      "name": "EUR/USD",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.053,
+          "mean_uncond": -0.013,
+          "lift_mean": 0.066,
+          "median_cond": 0.123,
+          "pneg_cond": 46.3,
+          "pneg_uncond": 49.3,
+          "lift_pneg": -3.0,
+          "ci90_mean": [
+            -0.042,
+            0.15
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": -0.081,
+          "mean_uncond": -0.026,
+          "lift_mean": -0.055,
+          "median_cond": 0.054,
+          "pneg_cond": 48.4,
+          "pneg_uncond": 50.4,
+          "lift_pneg": -2.1,
+          "ci90_mean": [
+            -0.191,
+            0.036
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": -0.663,
+          "mean_uncond": -0.052,
+          "lift_mean": -0.61,
+          "median_cond": -0.497,
+          "pneg_cond": 68.4,
+          "pneg_uncond": 50.9,
+          "lift_pneg": 17.6,
+          "ci90_mean": [
+            -0.807,
+            -0.515
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DCOILBRENTEU": {
+      "name": "Brent",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.396,
+          "mean_uncond": 0.033,
+          "lift_mean": 0.363,
+          "median_cond": 0.984,
+          "pneg_cond": 38.9,
+          "pneg_uncond": 46.9,
+          "lift_pneg": -7.9,
+          "ci90_mean": [
+            -0.082,
+            0.894
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.698,
+          "mean_uncond": 0.062,
+          "lift_mean": 0.636,
+          "median_cond": 1.111,
+          "pneg_cond": 41.8,
+          "pneg_uncond": 46.0,
+          "lift_pneg": -4.2,
+          "ci90_mean": [
+            0.012,
+            1.375
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.938,
+          "mean_uncond": 0.14,
+          "lift_mean": 0.798,
+          "median_cond": 1.407,
+          "pneg_cond": 45.5,
+          "pneg_uncond": 45.4,
+          "lift_pneg": 0.1,
+          "ci90_mean": [
+            0.061,
+            1.859
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "DCOILWTICO": {
+      "name": "WTI",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.177,
+          "mean_uncond": 0.043,
+          "lift_mean": 0.134,
+          "median_cond": 0.519,
+          "pneg_cond": 42.6,
+          "pneg_uncond": 46.8,
+          "lift_pneg": -4.2,
+          "ci90_mean": [
+            -0.322,
+            0.681
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.608,
+          "mean_uncond": 0.068,
+          "lift_mean": 0.54,
+          "median_cond": 1.356,
+          "pneg_cond": 43.4,
+          "pneg_uncond": 45.7,
+          "lift_pneg": -2.2,
+          "ci90_mean": [
+            -0.045,
+            1.251
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.78,
+          "mean_uncond": 0.123,
+          "lift_mean": 0.657,
+          "median_cond": 0.252,
+          "pneg_cond": 49.2,
+          "pneg_uncond": 46.1,
+          "lift_pneg": 3.1,
+          "ci90_mean": [
+            -0.188,
+            1.696
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "DHHNGSP": {
+      "name": "NatGas Henry Hub",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 2.726,
+          "mean_uncond": -0.066,
+          "lift_mean": 2.792,
+          "median_cond": -0.366,
+          "pneg_cond": 50.4,
+          "pneg_uncond": 49.4,
+          "lift_pneg": 1.0,
+          "ci90_mean": [
+            -0.938,
+            6.36
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 1.584,
+          "mean_uncond": -0.142,
+          "lift_mean": 1.726,
+          "median_cond": 0.18,
+          "pneg_cond": 46.7,
+          "pneg_uncond": 50.6,
+          "lift_pneg": -3.9,
+          "ci90_mean": [
+            -1.286,
+            4.438
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": -1.414,
+          "mean_uncond": -0.346,
+          "lift_mean": -1.068,
+          "median_cond": -0.833,
+          "pneg_cond": 52.5,
+          "pneg_uncond": 50.9,
+          "lift_pneg": 1.5,
+          "ci90_mean": [
+            -4.186,
+            1.041
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "GOLD": {
+      "name": "Or (GC futures)",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 0.621,
+          "mean_uncond": 0.192,
+          "lift_mean": 0.429,
+          "median_cond": 0.511,
+          "pneg_cond": 36.5,
+          "pneg_uncond": 44.6,
+          "lift_pneg": -8.1,
+          "ci90_mean": [
+            0.429,
+            0.834
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.818,
+          "mean_uncond": 0.383,
+          "lift_mean": 0.435,
+          "median_cond": 0.628,
+          "pneg_cond": 38.1,
+          "pneg_uncond": 44.2,
+          "lift_pneg": -6.1,
+          "ci90_mean": [
+            0.596,
+            1.047
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.647,
+          "mean_uncond": 0.761,
+          "lift_mean": -0.114,
+          "median_cond": 0.22,
+          "pneg_cond": 48.0,
+          "pneg_uncond": 43.7,
+          "lift_pneg": 4.3,
+          "ci90_mean": [
+            0.371,
+            0.929
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "NASDAQCOM": {
+      "name": "Nasdaq Composite",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": -0.171,
+          "mean_uncond": 0.239,
+          "lift_mean": -0.41,
+          "median_cond": 0.31,
+          "pneg_cond": 43.0,
+          "pneg_uncond": 40.9,
+          "lift_pneg": 2.1,
+          "ci90_mean": [
+            -0.403,
+            0.067
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.037,
+          "mean_uncond": 0.481,
+          "lift_mean": -0.444,
+          "median_cond": 0.766,
+          "pneg_cond": 42.2,
+          "pneg_uncond": 37.8,
+          "lift_pneg": 4.4,
+          "ci90_mean": [
+            -0.239,
+            0.313
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.584,
+          "mean_uncond": 0.964,
+          "lift_mean": -0.38,
+          "median_cond": 1.439,
+          "pneg_cond": 37.7,
+          "pneg_uncond": 34.6,
+          "lift_pneg": 3.1,
+          "ci90_mean": [
+            0.221,
+            0.938
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "SP500": {
+      "name": "S&P 500",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 225,
+          "n_eff": 45.0,
+          "mean_cond": -0.048,
+          "mean_uncond": 0.248,
+          "lift_mean": -0.296,
+          "median_cond": 0.227,
+          "pneg_cond": 43.6,
+          "pneg_uncond": 38.4,
+          "lift_pneg": 5.1,
+          "ci90_mean": [
+            -0.244,
+            0.14
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "10": {
+          "n": 225,
+          "n_eff": 22.5,
+          "mean_cond": 0.161,
+          "mean_uncond": 0.498,
+          "lift_mean": -0.337,
+          "median_cond": 0.483,
+          "pneg_cond": 40.4,
+          "pneg_uncond": 34.3,
+          "lift_pneg": 6.1,
+          "ci90_mean": [
+            -0.048,
+            0.368
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 225,
+          "n_eff": 11.2,
+          "mean_cond": 0.574,
+          "mean_uncond": 0.997,
+          "lift_mean": -0.423,
+          "median_cond": 1.364,
+          "pneg_cond": 37.3,
+          "pneg_uncond": 31.2,
+          "lift_pneg": 6.1,
+          "ci90_mean": [
+            0.355,
+            0.796
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DJIA": {
+      "name": "Dow Jones",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 225,
+          "n_eff": 45.0,
+          "mean_cond": 0.041,
+          "mean_uncond": 0.209,
+          "lift_mean": -0.168,
+          "median_cond": 0.135,
+          "pneg_cond": 45.3,
+          "pneg_uncond": 40.9,
+          "lift_pneg": 4.5,
+          "ci90_mean": [
+            -0.147,
+            0.227
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 225,
+          "n_eff": 22.5,
+          "mean_cond": 0.263,
+          "mean_uncond": 0.421,
+          "lift_mean": -0.158,
+          "median_cond": 0.303,
+          "pneg_cond": 43.6,
+          "pneg_uncond": 37.3,
+          "lift_pneg": 6.3,
+          "ci90_mean": [
+            0.042,
+            0.48
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 225,
+          "n_eff": 11.2,
+          "mean_cond": 0.726,
+          "mean_uncond": 0.84,
+          "lift_mean": -0.114,
+          "median_cond": 1.199,
+          "pneg_cond": 36.0,
+          "pneg_uncond": 33.6,
+          "lift_pneg": 2.4,
+          "ci90_mean": [
+            0.525,
+            0.934
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "CAC40": {
+      "name": "CAC 40",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": -0.035,
+          "mean_uncond": 0.042,
+          "lift_mean": -0.076,
+          "median_cond": 0.309,
+          "pneg_cond": 44.3,
+          "pneg_uncond": 44.7,
+          "lift_pneg": -0.4,
+          "ci90_mean": [
+            -0.253,
+            0.162
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.136,
+          "mean_uncond": 0.083,
+          "lift_mean": 0.054,
+          "median_cond": 0.517,
+          "pneg_cond": 43.4,
+          "pneg_uncond": 44.1,
+          "lift_pneg": -0.7,
+          "ci90_mean": [
+            -0.119,
+            0.383
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.54,
+          "mean_uncond": 0.162,
+          "lift_mean": 0.378,
+          "median_cond": 0.37,
+          "pneg_cond": 44.7,
+          "pneg_uncond": 44.4,
+          "lift_pneg": 0.2,
+          "ci90_mean": [
+            0.265,
+            0.839
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": true
+        }
+      }
+    },
+    "DAX": {
+      "name": "DAX",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": -0.082,
+          "mean_uncond": 0.135,
+          "lift_mean": -0.217,
+          "median_cond": 0.146,
+          "pneg_cond": 46.7,
+          "pneg_uncond": 43.4,
+          "lift_pneg": 3.4,
+          "ci90_mean": [
+            -0.307,
+            0.136
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 0.053,
+          "mean_uncond": 0.271,
+          "lift_mean": -0.218,
+          "median_cond": 0.406,
+          "pneg_cond": 45.1,
+          "pneg_uncond": 42.0,
+          "lift_pneg": 3.1,
+          "ci90_mean": [
+            -0.255,
+            0.338
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.493,
+          "mean_uncond": 0.537,
+          "lift_mean": -0.043,
+          "median_cond": 0.663,
+          "pneg_cond": 42.2,
+          "pneg_uncond": 40.7,
+          "lift_pneg": 1.5,
+          "ci90_mean": [
+            0.171,
+            0.831
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "STOXX50": {
+      "name": "Euro Stoxx 50",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": -0.136,
+          "mean_uncond": 0.04,
+          "lift_mean": -0.177,
+          "median_cond": 0.216,
+          "pneg_cond": 44.3,
+          "pneg_uncond": 44.4,
+          "lift_pneg": -0.1,
+          "ci90_mean": [
+            -0.367,
+            0.085
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": -0.048,
+          "mean_uncond": 0.08,
+          "lift_mean": -0.128,
+          "median_cond": 0.284,
+          "pneg_cond": 45.9,
+          "pneg_uncond": 44.3,
+          "lift_pneg": 1.6,
+          "ci90_mean": [
+            -0.328,
+            0.233
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 0.27,
+          "mean_uncond": 0.153,
+          "lift_mean": 0.117,
+          "median_cond": 0.465,
+          "pneg_cond": 45.1,
+          "pneg_uncond": 43.8,
+          "lift_pneg": 1.3,
+          "ci90_mean": [
+            -0.052,
+            0.591
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    },
+    "BTCUSD": {
+      "name": "Bitcoin",
+      "kind": "price",
+      "h": {
+        "5": {
+          "n": 244,
+          "n_eff": 48.8,
+          "mean_cond": 1.174,
+          "mean_uncond": 0.842,
+          "lift_mean": 0.332,
+          "median_cond": 0.379,
+          "pneg_cond": 48.0,
+          "pneg_uncond": 45.9,
+          "lift_pneg": 2.0,
+          "ci90_mean": [
+            0.169,
+            2.19
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": false
+        },
+        "10": {
+          "n": 244,
+          "n_eff": 24.4,
+          "mean_cond": 3.414,
+          "mean_uncond": 1.7,
+          "lift_mean": 1.714,
+          "median_cond": 2.648,
+          "pneg_cond": 41.8,
+          "pneg_uncond": 44.8,
+          "lift_pneg": -3.0,
+          "ci90_mean": [
+            1.845,
+            4.951
+          ],
+          "tag": "\ud83d\udfe1",
+          "signal": true
+        },
+        "20": {
+          "n": 244,
+          "n_eff": 12.2,
+          "mean_cond": 5.15,
+          "mean_uncond": 3.459,
+          "lift_mean": 1.69,
+          "median_cond": 3.47,
+          "pneg_cond": 42.6,
+          "pneg_uncond": 43.1,
+          "lift_pneg": -0.5,
+          "ci90_mean": [
+            3.02,
+            7.373
+          ],
+          "tag": "\ud83d\udd34",
+          "signal": false
+        }
+      }
+    }
+  },
+  "_run_date": "2026-07-27",
+  "_schema_version": 2,
+  "_persisted_at": "2026-07-27T13:55:23"
+}

@@ -90,15 +90,21 @@ SERIES = {
     "DCOILWTICO":     dict(kind="price", role="resp", name="WTI"),
     "DHHNGSP":        dict(kind="price", role="resp", name="NatGas Henry Hub"),
     "GOLD":           dict(kind="price", role="resp", name="Or (GC futures)"),  # Yahoo GC=F ; resp-only (comble le trou FRED)
-    # --- Equities ---
+    # --- Equities US ---
     "NASDAQCOM":      dict(kind="price", role="resp", name="Nasdaq Composite"),
     "SP500":          dict(kind="price", role="resp", name="S&P 500"),
     "DJIA":           dict(kind="price", role="resp", name="Dow Jones"),
+    # --- Equities Europe --- (Yahoo ; resp-only : CONTEXTE pour PF clients FR/EU,
+    #     le régime reste US-conditionné → direction attendue = bruit OOS)
+    "CAC40":          dict(kind="price", role="resp", name="CAC 40"),
+    "DAX":            dict(kind="price", role="resp", name="DAX"),
+    "STOXX50":        dict(kind="price", role="resp", name="Euro Stoxx 50"),
     # --- Crypto --- (Yahoo BTC-USD ; resp-only : histoire courte ~2014 -> n_eff faible)
     "BTCUSD":         dict(kind="price", role="resp", name="Bitcoin"),
 }
 
-YAHOO = {"MOVE": "^MOVE", "BTCUSD": "BTC-USD", "GOLD": "GC=F"}   # ids non-FRED -> Yahoo via yfetch
+YAHOO = {"MOVE": "^MOVE", "BTCUSD": "BTC-USD", "GOLD": "GC=F",
+         "CAC40": "^FCHI", "DAX": "^GDAXI", "STOXX50": "^STOXX50E"}   # ids non-FRED -> Yahoo via yfetch
 
 def fetch(sid):
     if sid in YAHOO:
@@ -282,6 +288,12 @@ for i in range(20, N):
     if math.isfinite(a) and math.isfinite(b) and a > 0 and b > 0:
         growth[i] = math.log(a / b) * 100
 raw_feat["growth"] = growth
+
+# (Japon) carry yen (momentum USD/JPY) TESTÉ 2026-07-27 -> REJETÉ comme feature de conditionnement :
+#     dilue le VIX (0,19->0,16), best_train bascule VIX->BTC (bruit), redondant avec dusd_5.
+#     Raison de fond : le carry-unwind est un ÉVÉNEMENT de QUEUE (Août 2024) ; ce moteur, bâti sur
+#     des base rates MOYENS, est aveugle aux queues par construction -> mauvais outil pour le Japon.
+#     USD/JPY reste asset-RÉPONSE (DEXJPUS) pour le monitoring.
 
 FEATNAMES = ["d10_5","dreal_5","dbe_5","vix_lvl","slope","dusd_5","brwti","brent_mom","growth"]
 WINSOR = 2.5   # (A) winsorizing : cape les features à ±2.5σ -> un outlier de crise (2008/2020,

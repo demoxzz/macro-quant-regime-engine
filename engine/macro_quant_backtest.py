@@ -47,17 +47,17 @@ np.random.seed(42)
 # Univers (features de conditionnement + assets-reponse a valider)
 # ------------------------------------------------------------------ #
 COND_SERIES = ["DGS10","DFII10","T10YIE","VIXCLS","T10Y2Y","DTWEXBGS","DCOILBRENTEU","DCOILWTICO"]
-RESP_BT     = ["NASDAQCOM","DTWEXBGS","VIXCLS","MOVE","BTCUSD","GOLD","DGS10","DGS2","DCOILBRENTEU","DEXUSEU","T10Y2Y"]
-YAHOO = {"MOVE":"^MOVE", "BTCUSD":"BTC-USD", "GOLD":"GC=F"}   # ids non-FRED -> fetch Yahoo via yfetch
+RESP_BT     = ["NASDAQCOM","DTWEXBGS","VIXCLS","MOVE","BTCUSD","GOLD","CAC40","DAX","STOXX50","DGS10","DGS2","DCOILBRENTEU","DEXUSEU","T10Y2Y"]
+YAHOO = {"MOVE":"^MOVE", "BTCUSD":"BTC-USD", "GOLD":"GC=F", "CAC40":"^FCHI", "DAX":"^GDAXI", "STOXX50":"^STOXX50E"}   # ids non-FRED -> fetch Yahoo via yfetch
 KIND = {  # nature de chaque serie
     "DGS10":"yield","DGS2":"yield","DFII10":"yield","T10YIE":"yield","T10Y2Y":"yield",
     "VIXCLS":"vol","MOVE":"vol","BTCUSD":"price","GOLD":"price","DTWEXBGS":"price","DEXUSEU":"price","DCOILBRENTEU":"price","DCOILWTICO":"price",
-    "NASDAQCOM":"price",
+    "NASDAQCOM":"price","CAC40":"price","DAX":"price","STOXX50":"price",
 }
 NAME = {
     "DGS10":"UST 10Y","DGS2":"UST 2Y","DFII10":"UST 10Y reel","T10YIE":"Breakeven 10Y",
     "T10Y2Y":"Pente 2s10s","VIXCLS":"VIX","MOVE":"MOVE (vol taux)","BTCUSD":"Bitcoin","GOLD":"Or (GC)","DTWEXBGS":"USD broad","DEXUSEU":"EUR/USD",
-    "DCOILBRENTEU":"Brent","DCOILWTICO":"WTI","NASDAQCOM":"Nasdaq Comp.",
+    "DCOILBRENTEU":"Brent","DCOILWTICO":"WTI","NASDAQCOM":"Nasdaq Comp.","CAC40":"CAC 40","DAX":"DAX","STOXX50":"Euro Stoxx 50",
 }
 # (E) CIBLES VOL RÉALISÉE : pseudo-assets kind="rvol" -> vol réalisée annualisée forward
 #     du prix de base. Test du 2nd moment sur des assets non-actions (oil/BTC/or) + S&P (contrôle).
@@ -132,6 +132,7 @@ gmom=np.full(N,np.nan)
 for i in range(20,N):
     a,b=_cg[i],_cg[i-20]
     if math.isfinite(a) and math.isfinite(b) and a>0 and b>0: gmom[i]=math.log(a/b)*100
+# (Japon) carry yen testé 2026-07-27 -> REJETÉ (dilue VIX 0,19->0,16, best_train->BTC).
 raw_feat={
     "d10_5":dbps(LV["DGS10"],K_IMP),"dreal_5":dbps(LV["DFII10"],K_IMP),
     "dbe_5":dbps(LV["T10YIE"],K_IMP),"vix_lvl":LV["VIXCLS"],
@@ -572,3 +573,19 @@ for CB in (0.05,0.15):                            # coûts aller : 5 bps (optimi
         dsr=_psr(sr,_emax_sr(V,5),sk,ku,T)
         print(f"  -> meilleure @15bps = «{best}» ; DSR (N=5 essais) = {dsr:.2f}  ({'ROBUSTE' if dsr>0.95 else 'PAS robuste'})")
 print("\n  Rappel : B&H VIXY = la saignée du contango ; le signal a de la valeur s'il BAT le carry nu OOS.")
+
+# ================================================================== #
+#  PG — TEST DE QUEUE / CRISE : le winsor aveugle-t-il le modèle sur
+#  les pires jours ? (IC moyen ≠ résistance de queue). VIX h=10.
+# ================================================================== #
+rv=rec["VIXCLS"][10]
+pr=np.array(rv["pred_mean"],float); re=np.array(rv["real"],float); dt=np.array(rv["date"])
+ok=np.isfinite(pr)&np.isfinite(re); pr,re,dt=pr[ok],re[ok],dt[ok]
+thr=np.quantile(re,0.90)          # top 10% des hausses VIX réalisées = queue de crise
+tail=re>=thr
+cap=pr[tail].mean()/re[tail].mean()*100
+print(f"\n============ PG TAIL/CRISE (VIX 10j, WINSOR={WINSOR}) ============")
+print(f"  queue = top 10% spikes VIX (seuil +{thr:.1f}pt, n={int(tail.sum())})")
+print(f"  réalisé moy queue = +{re[tail].mean():.1f}pt | PRÉDIT moy queue = +{pr[tail].mean():.1f}pt  -> CAPTURE {cap:.0f}%")
+idx=np.argsort(re)[::-1][:8]
+print("  8 pires spikes: "+", ".join(f"{dt[i][:7]} r{re[i]:.0f}/p{pr[i]:.0f}" for i in idx))

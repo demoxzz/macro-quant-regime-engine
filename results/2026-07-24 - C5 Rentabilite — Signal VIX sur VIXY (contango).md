@@ -46,11 +46,16 @@ related: []
 ## Lecture honnête
 1. **Le signal seul ne fait pas un edge tradable long-vol** : *long/short* ≈ **breakeven** (Sharpe −0,04), *long/flat* saigne. Le spot-edge est **statistique, pas directement monétisable**. buy-side avait raison.
 2. **Le seul truc qui gagne = SHORT vol (carry)** — mais c'est la **prime de risque de vol** (bien connue), **pas mon edge**, et son maxDD ici (−151) **sous-estime massivement** le vrai risque de queue (Volmageddon 2018, mars 2020 = −80/−96% en jours ; l'échantillonnage 10j les lisse). *« Ramasser des pièces devant un rouleau compresseur ».*
-3. **La VRAIE valeur du signal = filtre de risque sur le carry** : *« Carry + filtre vol-up »* a un Sharpe plus bas que le carry nu (0,62 vs 1,06) **MAIS le plus petit drawdown (−101)** ET une **meilleure stabilité OOS** (train 0,53 / test 0,69, vs 1,31/0,89 pour le carry nu). → le régime dit **QUAND réduire l'exposition short-vol** avant un spike. Usage institutionnel légitime.
+3. **La valeur du signal comme filtre de risque = à FORT tempérer (test de queue, cf. ↓)** : *« Carry + filtre vol-up »* affiche le plus petit drawdown (−101) et une meilleure stabilité OOS (train 0,53 / test 0,69) — **mais sur données 10j non chevauchantes qui lissent les krachs**. Le test de queue (§ suivant) montre que le filtre **ne se déclenche PAS avant les vrais krachs** → cette « protection » est largement illusoire.
+
+## ⚠️ Test de queue (critique PG) — le filtre est AVEUGLE aux krachs
+Sur le **top 10% des spikes VIX réalisés** (n=364, réalisé moyen **+8,6 pt**) : le modèle **PRÉDIT +0,1 pt → capture ~1%**. Sur les 8 pires (mars 2020 : réel **+49 pt**, prédit **−2**), il penche même *baissier*. **Identique avec/sans winsor** (le winsor n'y est pour rien — c'est la nature « moyenne » du base rate, incapable de prédire un saut de +49).
+→ **Conséquence directe** : le « filtre vol-up » ne préviendrait PAS un mars 2020 → le carry mangerait le krach en plein. La protection de queue du C5 est **surestimée**. *« Très bon sauf les pires jours »* (PG) = confirmé, chiffré.
 
 ## Caveats (ne pas se raconter d'histoires)
 - **DSR de la meilleure @15bps = 0,58 → PAS robuste** (5 stratégies testées). Rien ne passe encore le filtre strict de déflation.
-- Le **risque de queue du short-vol est sous-estimé** par l'échantillonnage non chevauchant → ne PAS célébrer le Sharpe 1,06.
+- **Le signal est aveugle aux krachs (capture 1% de la queue)** → utile pour le timing de vol *en moyenne*, **inutile comme protection anti-krach**. « Ça dépend de ton objectif » (PG).
+- Le **risque de queue du short-vol est sous-estimé** par l'échantillonnage non chevauchant → ne PAS célébrer le Sharpe 1,06 ni la « protection » du filtre.
 - Robuste aux coûts (5 vs 15 bps ≈ identique) → ce n'est **pas** les coûts le tueur, c'est le **contango**.
 
 ## Conclusion & suite
