@@ -14,7 +14,7 @@ Produit :
   - une figure  Macro/Quant/analysis/macro-quant/analyze_db_YYYY-MM-DD.png :
       ① heatmap régime (features × temps) = "le film du régime"
       ② distance de chaque run passé à AUJOURD'HUI (+ seuil "même régime")
-      ③ lift VIX 10j dans le temps (+ percentile du jour)
+      ③ lift 10j dans le temps : VIX (validé OOS) + MOVE (candidat, à trancher au backtest trimestriel)
 
 Dégrade proprement si peu d'historique (le message le dit).
 Seuil "même régime" = RMS des écarts de z sur les 8 features < THRESH (en σ).
@@ -38,6 +38,17 @@ FLAB  = {"d10_5":"Δ10Y nom","dreal_5":"Δ10Y réel","dbe_5":"Δbreakeven","vix_
          "slope":"pente 2s10s","dusd_5":"USD","brwti":"Brent−WTI","brent_mom":"Brent mom"}
 THRESH = 0.75   # RMS z-distance (σ) en-deçà duquel deux jours = "même régime"
 
+# Assets suivis cross-day pour leur base rate forward (lift 10j).
+#   VIX  = seul asset VALIDÉ OOS (cf backtest — IC 0.170, t=3.22).
+#   MOVE = CANDIDAT 2e étoile, en observation. MOVE est déjà dans l'univers-réponse du
+#          backtest (RESP_BT) : l'IC OOS est tranché au backtest TRIMESTRIEL ;
+#          ici on accumule son lift réalisé run-après-run pour le voir converger (ou pas).
+#   -> couplage : le backtest donne le verdict IC OOS ; analyze_db donne le film forward.
+TRACK = [
+    ("VIXCLS", "VIX",  "#6a1b9a", True),    # (sid, label, couleur, validé_OOS)
+    ("MOVE",   "MOVE", "#00838f", False),
+]
+
 
 def load_features():
     p = os.path.join(DB, "regime_features.csv")
@@ -50,13 +61,16 @@ def load_features():
     return dates, Z, nan
 
 
-def load_vix_lift(h="10"):
+def load_lift(sid, h="10"):
+    """lift_mean forward (h j) de `sid`, run-après-run, trié par date."""
     p = os.path.join(DB, "base_rates.csv")
     if not os.path.exists(p): return [], []
     d, v = [], []
     for r in csv.DictReader(open(p)):
-        if r["sid"] == "VIXCLS" and r["h"] == h:
-            d.append(r["run_date"]); v.append(float(r["lift_mean"]))
+        if r["sid"] == sid and r["h"] == h:
+            try: lift = float(r["lift_mean"])
+            except (ValueError, TypeError): continue
+            d.append(r["run_date"]); v.append(lift)
     order = np.argsort(d); return list(np.array(d)[order]), list(np.array(v)[order])
 
 
@@ -77,7 +91,7 @@ def main():
     dist = np.sqrt(np.mean((Z - today) ** 2, axis=1))     # RMS z-distance à aujourd'hui
     similar = int(np.sum(dist <= THRESH))                 # runs (dont aujourd'hui) dans le même régime
     streak = regime_streak(Z, THRESH)
-    vdates, vlift = load_vix_lift("10")
+    tracks = {sid: load_lift(sid, "10") for sid, _, _, _ in TRACK}
 
     # ---------- résumé texte ----------
     print(f"\n=== ANALYSE CROSS-DAY — base de {T} run(s) ({dates[0]} → {dates[-1]}) ===")
@@ -90,9 +104,12 @@ def main():
     if T >= 2:
         j = int(np.argsort(dist)[1]) if T > 1 else -1     # plus proche autre que soi
         print(f"Run passé le plus proche d'aujourd'hui : {dates[j]} (distance {dist[j]:.2f}σ).")
-    if vlift:
-        pct = 100.0 * np.mean(np.array(vlift) <= vlift[-1])
-        print(f"Lift VIX 10j du jour = {vlift[-1]:+.2f} pt — percentile {pct:.0f}% de ton historique ({len(vlift)} runs).")
+    for sid, lab, _, oos in TRACK:
+        _, tv = tracks[sid]
+        if not tv: continue
+        pct = 100.0 * np.mean(np.array(tv) <= tv[-1])
+        star = "validé OOS" if oos else "CANDIDAT — verdict IC au backtest trimestriel"
+        print(f"Lift {lab} 10j du jour = {tv[-1]:+.2f} pt — percentile {pct:.0f}% de ton historique ({len(tv)} runs) — {star}.")
 
     # ---------- figure ----------
     fig = plt.figure(figsize=(13, 10))
@@ -123,18 +140,26 @@ def main():
                   loc="left", fontweight="bold", fontsize=12)
     ax2.legend(fontsize=8, loc="upper left")
 
-    # ③ lift VIX 10j
+    # ③ lift forward 10j — VIX (validé OOS) vs MOVE (candidat, à trancher au backtest trimestriel)
     ax3 = fig.add_subplot(gs[2])
-    if vlift:
-        xv = np.arange(len(vdates))
-        ax3.plot(xv, vlift, "-o", ms=3, color="#6a1b9a")
-        ax3.axhline(0, color="black", lw=0.8)
+    plotted = False
+    for sid, lab, col, oos in TRACK:
+        td, tv = tracks[sid]
+        if not tv: continue
+        xv = np.arange(len(td))
+        ls = "-" if oos else "--"
+        ax3.plot(xv, tv, ls + "o", ms=3, color=col,
+                 label=f"{lab} ({'validé OOS' if oos else 'candidat'})")
         ax3.set_xticks(xv if len(xv)<=40 else xv[::max(1,len(xv)//20)])
-        ax3.set_xticklabels((vdates if len(xv)<=40 else vdates[::max(1,len(xv)//20)]), rotation=90, fontsize=7)
+        ax3.set_xticklabels((td if len(xv)<=40 else td[::max(1,len(xv)//20)]), rotation=90, fontsize=7)
+        plotted = True
+    if plotted:
+        ax3.axhline(0, color="black", lw=0.8)
+        ax3.legend(fontsize=8, loc="upper left")
     else:
-        ax3.text(0.5,0.5,"pas encore de lift VIX", ha="center", va="center")
-    ax3.set_ylabel("lift VIX 10j (pt)")
-    ax3.set_title("③ ÉVOLUTION DU LIFT VIX (10j) — le seul signal validé OOS, dans le temps",
+        ax3.text(0.5,0.5,"pas encore de lift suivi", ha="center", va="center")
+    ax3.set_ylabel("lift 10j (pt)")
+    ax3.set_title("③ ÉVOLUTION DU LIFT 10j — VIX (validé OOS) vs MOVE (candidat, backtest trimestriel)",
                   loc="left", fontweight="bold", fontsize=12)
 
     fig.suptitle(f"MACRO QUANT — analyse cross-day  ·  {T} run(s)  ·  {dates[0]} → {dates[-1]}",

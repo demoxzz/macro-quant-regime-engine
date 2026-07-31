@@ -35,7 +35,7 @@ Dire **à quelle fréquence** un régime historiquement comparable a été suivi
 | **C3** | Jambes du régime (inflation + **croissance** cuivre/or → reflation vs stagflation) | ✅ | daily [[Macro/Quant/analysis/macro-quant/2026-07-24 - Macro Quant Daily]] |
 | **C4** | Base de données & vintage point-in-time + lecture cross-day | ✅ | `Macro/Quant/db/SCHEMA.md` · `analyze_db.py` |
 | **C5** | **VERS LA RENTABILITÉ** (instrument tradable, coûts, strat dynamique) | 🔄 | **Phase 1 faite** : edge VIX **non tradable standalone** (IC 0,19→0,04 sur VIXY, contango) ; piste = **overlay de dé-risquage sur carry**. [[Macro/Quant/research/2026-07-24 - C5 Rentabilite — Signal VIX sur VIXY (contango)]] |
-| **C6** | **AMT regime-detection** (projet sœur, pas v1) — quand le fade/retour-à-la-valeur marche | ⏸️ **pause** | step-1 fait : look-ahead levé, **hypothèse balance/trend RÉFUTÉE à 60m** ; reprendre si data 5m. [[Macro/Quant/amt-regime/2026-07-27 - C6 step1 — Thermometre causal (hypothese refutee 60m)]] |
+| **C6** | **AMT regime-detection** (projet sœur, pas v1) — quand le fade/retour-à-la-valeur marche | 🔄 **actif** | look-ahead levé ; 60m réfuté MAIS **à 5m edge causal ROBUSTE** (fade extension ≥2,5 ATR en balance, SIG multi-H, hit 61-70% ; trend=0) → **FirstRate multi-années justifié** (caveat : 60j only). [[Macro/Quant/amt-regime/2026-07-27 - C6 step1 — Thermometre causal (hypothese refutee 60m)]] |
 
 ---
 
@@ -67,7 +67,8 @@ Dire **à quelle fréquence** un régime historiquement comparable a été suivi
 | 24/07 | Vol réalisée (E) | réfuté (persistance) | [[Macro/Quant/research/2026-07-24 - Test E — Vol realisee (piege persistance)]] |
 | 24/07 | **C5 — signal sur VIXY (contango)** | edge **non tradable standalone** (IC 0,04) ; overlay carry surestimé ; rien ne passe DSR | [[Macro/Quant/research/2026-07-24 - C5 Rentabilite — Signal VIX sur VIXY (contango)]] |
 | 24/07 | **Test de queue (critique PG)** | signal **aveugle aux krachs** : capture ~1% de la queue (mars 2020 +49 prédit −2) ; **winsor innocenté** (1% avec/sans). IC moyen ≠ résistance de queue | méthodo §v1.1 + C5 §queue |
-| 27/07 | **C6 step-1 — thermomètre AVWAP causal** | look-ahead levé ; **hypothèse balance/trend RÉFUTÉE à 60m** (2 classifieurs causaux, signe inversé) → artefact ; C6 en pause pending data 5m | [[Macro/Quant/amt-regime/2026-07-27 - C6 step1 — Thermometre causal (hypothese refutee 60m)]] |
+| 27/07 | **C6 step-1 — thermomètre AVWAP causal** | look-ahead levé ; **hypothèse RÉFUTÉE à 60m** (artefact) | [[Macro/Quant/amt-regime/2026-07-27 - C6 step1 — Thermometre causal (hypothese refutee 60m)]] |
+| 27/07 | **C6 step-2 — test 5m (gratuit Yahoo) + sweep H** | à 5m **edge causal ROBUSTE** : fade extension ≥2,5 ATR en **balance** = +0,25→+0,71 ATR, SIG sur 4 H/5, hit 61-70% ; **trend = 0** (thèse vindiquée). Caveat : 60j only → **FirstRate multi-années justifié** | même note (step-2) |
 
 ---
 

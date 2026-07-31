@@ -5,7 +5,7 @@ statut: en-cours
 tier: procedural
 confidence: 60
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-31
 decay-date: 2027-01-14
 hallucination-risk: low
 validated-by: self
@@ -110,6 +110,19 @@ $$n_{eff} = |A| / h$$
 
 **Signal = OUI** uniquement si l'IC 90 % bootstrap **exclut** la valeur inconditionnelle.
 
+> **Affichage par horizon — règle anti horizon-picking.** Le moteur calcule les 3 horizons {5, 10, 20 j} pour **chaque** asset. Dans la note quotidienne :
+> - **Table principale = horizon 10 j FIXE pour tous** (contexte de régime, glanceable, non-exploitables inclus). L'horizon de référence est **imposé, pas choisi** — jamais « le plus significatif des 3 par asset » (ce serait du *horizon-picking* : sélectionner a posteriori l'horizon qui exclut le mieux le baseline gonfle artificiellement le taux de signaux).
+> - **Bloc « term-structure » dédié = uniquement pour les assets à skill OOS** (aujourd'hui le VIX seul), déroulant les 5/10/20 j côte à côte (lift, IC, n_eff, tag). C'est le **seul** endroit où l'horizon change une décision — et le backtest montre que le VIX est structurellement + propre à **5 j** (t=3,99) qu'à 10 j (t=3,22). Tripler la ligne des assets non-exploitables = fausse précision, proscrit.
+
+> **Plafond structurel de n_eff (pourquoi le 🟢 est quasi inatteignable à 10 j).** `n_eff = |A|/h` et `|A| = k = max(120, 5 % de l'échantillon)`. Avec la fenêtre 2007+ (~4 900 séances valides → ~244 analogues), le n_eff plafonne à :
+> - **h = 5 j → ~49** (levier horizon : mêmes analogues, moins de chevauchement)
+> - **h = 10 j → ~24**
+> - **h = 20 j → ~12**
+>
+> Atteindre 🟢 (>60) demanderait `|A| > 60·h` : **>300 analogues à 5 j** (échantillon ~6 000 j, ~24 ans → réaliste vers ~2031 à mesure que la data s'accumule) et **>600 analogues à 10 j** (~12 000 j, ~48 ans → **hors de portée**). ⇒ **aucune ligne à 10/20 j ne sera jamais 🟢 dans le moteur v1** ; le meilleur régime de confiance est le **horizon 5 j sur assets full-history** (VIX, Nasdaq, taux, oil, FX). C'est un plafond de **design + longueur d'échantillon**, pas un bug. Élargir k (ex. 8-10 %) monterait `|A|` mais **dilue l'analogie** (voisins plus lointains) — compromis n vs pertinence, non retenu en v1.
+>
+> Corollaire : un n_eff **inférieur** au plafond de son horizon signale un asset à **historique court** (moins d'analogues portent un forward exploitable) — SP500/DJIA (2016+, ~204 → n_eff 20), HY/IG OAS (2023-07+, ~62 → n_eff 6). Le tag suit toujours `n_eff`, jamais `|A|` brut.
+
 ---
 
 ## 4. Lecture — ce que le moteur PEUT et NE PEUT PAS dire
@@ -145,6 +158,7 @@ Un base rate n'a de valeur que s'il **prédit hors-échantillon**. Backtest caus
 - **Winsor exonéré sur ce point** : capture de queue = 1% **avec ET sans** winsor → le winsor ne masque pas les crises (la cécité est intrinsèque au base rate). Le winsor reste justifié (améliore l'IC moyen 0,16→0,19, empêche la domination d'une feature).
 - **(D) JAMBE CROISSANCE** = `growth` = momentum 20j **cuivre/or** (HG=F/GC=F). 9ᵉ feature de conditionnement. C'est l'axe qui manquait : reflation (croissance↑) et stagflation (croissance↓) **partagent la jambe inflation** → sans growth, le moteur ne peut pas les distinguer. Signe + = growth-on. **VIX survit** (IC OOS 0,192, hold-out test 0,188, 12/15 ans). Ex. 24/07 : growth +0,64 → **reflation confirmée par calcul** (pas stagflation). Schema DB → **v2**.
 - **Non-FRED via Yahoo** : MOVE `^MOVE`, BTC `BTC-USD`, Or `GC=F`, cuivre `HG=F` — MOVE/BTC/Or resp-only **réfutés OOS** ; cuivre = input feature growth (VIX reste seul asset validé).
+- **(F) Re-test permanent de MOVE (candidat 2e étoile).** MOVE a été **réfuté OOS** au backtest historique, mais reste le candidat le plus proche du seuil (vol des taux, cousine du VIX). On l'a donc mis en **observation cross-day** : `analyze_db.py` trace désormais son **lift forward 10j réalisé run-après-run** (panneau ③, VIX validé vs MOVE candidat), et le **backtest trimestriel** (`macro_quant_backtest.py`) lance automatiquement `analyze_db` en fin de run + résume l'IC OOS de MOVE. Verdict d'accession : MOVE ne passe le filtre OOS que si son **IC OOS redevient significatif ET robuste** (façon VIX : DSR/PBO/hold-out). Tant que non atteint → MOVE reste `resp-only`. C'est le mécanisme qui empêche un rejet ancien de se figer en dogme sans re-mesure.
 
 ## 5. Roadmap v2 (reste à faire)
 - ~~**(E) Cible vol réalisée**~~ → **TESTÉ 2026-07-24, NÉGATIF** : IC niveau 0,22-0,53 mais = **pure persistance** (clustering) ; Δvol (le vrai test) ≈ 0 → pas de 2ᵉ étoile. Détail : [[2026-07-24 - Test E — Vol realisee (piege persistance)]] · fiche [[Vol realisee — niveau vs changement (piege persistance)]].

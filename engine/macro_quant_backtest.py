@@ -510,7 +510,7 @@ print("\n[5] robustesse -> /tmp/macro_quant_backtest.json (cle 'robustness')", f
 
 # ================================================================== #
 #  C5 — VERS LA RENTABILITÉ : le signal VIX survit-il au CONTANGO + coûts
-#  sur l'instrument TRADABLE (VIXY) ?  (make-or-break, retour Amundi)
+#  sur l'instrument TRADABLE (VIXY) ?  (make-or-break, retour buy-side)
 #  Réutilise le signal causal rec["VIXCLS"] (pred_mean = ΔVIX prédit).
 # ================================================================== #
 H0=10
@@ -589,3 +589,32 @@ print(f"  queue = top 10% spikes VIX (seuil +{thr:.1f}pt, n={int(tail.sum())})")
 print(f"  réalisé moy queue = +{re[tail].mean():.1f}pt | PRÉDIT moy queue = +{pr[tail].mean():.1f}pt  -> CAPTURE {cap:.0f}%")
 idx=np.argsort(re)[::-1][:8]
 print("  8 pires spikes: "+", ".join(f"{dt[i][:7]} r{re[i]:.0f}/p{pr[i]:.0f}" for i in idx))
+
+# ================================================================== #
+#  MOVE — 2e ÉTOILE CANDIDATE : verdict IC OOS + film cross-day
+#  ---------------------------------------------------------------
+#  Le backtest ci-dessus a déjà noté MOVE (RESP_BT) en OOS : on résume
+#  son IC 10j et son test de robustesse "façon VIX". Puis on lance
+#  analyze_db pour ACCUMULER son lift forward réalisé run-après-run —
+#  les deux ensemble tranchent l'accession de MOVE au filtre OOS.
+#  (routine à jouer au rythme TRIMESTRIEL, cf command /macro-quant.)
+# ================================================================== #
+print("\n================ MOVE — CANDIDAT 2e ÉTOILE (trimestriel) ================")
+if "MOVE" in report["assets"] and 10 in report["assets"]["MOVE"]["h"]:
+    mh=report["assets"]["MOVE"]["h"][10]
+    lo,hi=mh["ic_cov_ci"]
+    sig="SIGNIFICATIF (IC OOS>0, CI90 exclut 0)" if (lo is not None and lo>0) else "PAS significatif (CI90 inclut 0)"
+    print(f"  IC OOS 10j = {mh['ic_pearson']:.3f} (Spearman {mh['ic_spearman']:.3f}) ; "
+          f"CI90 covariance [{lo:.3f}, {hi:.3f}] -> {sig}")
+    print(f"  Q5-Q1 = {mh['q_spread']:.2f} (médian {mh['q_spread_median']:.2f}) ; Brier skill = {mh['brier_skill']:.2f}")
+    print(f"  Seuil validation = IC OOS significatif ET robuste (façon VIX). Tant que non atteint : MOVE reste resp-only.")
+else:
+    print("  (MOVE pas assez d'OOS ce run — historique trop court.)")
+try:
+    import subprocess
+    HERE=os.path.dirname(os.path.abspath(__file__))
+    subprocess.run([sys.executable, os.path.join(HERE,"analyze_db.py")],
+                   cwd=HERE, check=False)
+    print("  [analyze_db] film cross-day (lift VIX vs MOVE) rafraîchi -> analysis/macro-quant/analyze_db_*.png")
+except Exception as e:
+    print(f"  [analyze_db] non lancé ({e}) — backtest OK quand même.")

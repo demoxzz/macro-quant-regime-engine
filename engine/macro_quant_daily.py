@@ -175,6 +175,15 @@ def main():
         print(f"[daily] dashboard -> analysis/macro-quant/daily/{rundate}.png", file=sys.stderr)
     except Exception as e:
         print(f"[daily] dashboard non généré ({e}) — persistance OK quand même.", file=sys.stderr)
+    # lecture cross-day (analyse de la base append-only) : best-effort, après persistance
+    # -> se rafraîchit à CHAQUE run pour ne jamais retarder derrière la base.
+    try:
+        subprocess.run([sys.executable, os.path.join(HERE, "analyze_db.py")],
+                       cwd=HERE, stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL, check=True)
+        print(f"[daily] cross-day -> analysis/macro-quant/analyze_db_{rundate}.png", file=sys.stderr)
+    except Exception as e:
+        print(f"[daily] cross-day non généré ({e}) — persistance OK quand même.", file=sys.stderr)
     print(f"[daily] OK -> {DB}", file=sys.stderr)
 
 
